@@ -11,8 +11,70 @@
 <body>
 <% include partials/nav %>
 <div class="container">
-    <h1 class="header">Movie List</h1>
-    <p>Your future list of Movies!</p>
+    <div id="app">
+        <div class="row" id="movieList">
+            <h3>Movie list</h3>
+            <table v-if="hazMovies">
+                <thead>
+                <tr>
+                    <th>Year</th>
+                    <th>Title</th>
+                    <th>IMDB</th>
+                    <th>Score</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="movie in movies">
+                    <td>{{ movie.year }}</td>
+                    <td>{{ movie.title }}</td>
+                    <td>{{ movie.imdb_link }}</td>
+                    <td>{{ movie.imdb_score }}</td>
+                    <td>
+                        <button id="movieDelete" @click="confirmDeleteMovie(movie.id)" class="btn-small"><i class="material-icons right">delete</i>Delete</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <p v-if="noMovies">No movies yet!</p>
+        </div>
+        <div class="row" id="moviesEdit">
+            <h3>Add a movie</h3>
+            <form class="col s12" @submit.prevent="addMovie">
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input v-model="year" ref="year" placeholder="1972" id="year" type="text" class="validate">
+                        <label for="year">Year</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input v-model="title" ref="title" placeholder="The Godfather" id="title" type="text" class="validate">
+                        <label for="title">Title</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input v-model="imdb_link" ref="imdb_link" placeholder="https://www.imdb.com/title/tt0068646/" id="imdb_link" type="text" class="validate">
+                        <label for="imdb_link">IMDB</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input v-model="imdb_score" ref="imdb_score" placeholder="9.20" id="imdb_score" type="text" class="validate">
+                        <label for="imdb_score">Score</label>
+                    </div>
+                </div>
+                <button id="movieEditSubmit" class="btn" type="submit"><i class="material-icons right">send</i>Submit</button>
+            </form>
+        </div>
+        <div id="deleteConfirm" ref="deleteConfirm" class="modal">
+            <div class="modal-content">
+                <h4>Confirm delete</h4>
+                <p>Delete {{ selectedMovie }}?</p>
+            </div>
+            <div class="modal-footer">
+                <button @click="deleteMovie(selectedMovieId)" class="modal-close btn-flat">Ok</button>
+                <button class="modal-close btn-flat">Cancel</button>
+            </div>
+        </div>
+    </div>
 </div>
-</body>
+<script src="js/main.js"></script></body>
 </html>
